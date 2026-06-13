@@ -751,18 +751,17 @@
     let history = [];
 
     // ── Char counter ────────────────────────────────────────────────────────
-    input.addEventListener('input', () => {
+    function updateCharCount() {
       const len = input.value.length;
-      charHint.textContent = `${len} / 1000`;
+      charHint.textContent = len + ' / 1000';
       charHint.classList.toggle('warn', len > 900);
-    });
-
-    // ── Submit on Enter (no shift) ──────────────────────────────────────────
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
-    });
+    }
+    input.addEventListener('input', updateCharCount);
+    input.addEventListener('keyup', updateCharCount);
+    input.addEventListener('change', updateCharCount);
 
     submitBtn.addEventListener('click', submit);
+    submitBtn.addEventListener('touchend', function(e) { e.preventDefault(); submit(); });
 
     // ── UI state helpers ────────────────────────────────────────────────────
     function showState(state) {
@@ -873,7 +872,9 @@
     }
 
     tabAsk.addEventListener('click', () => switchTab('ask'));
+    tabAsk.addEventListener('touchend', function(e) { e.preventDefault(); switchTab('ask'); });
     tabAdd.addEventListener('click', () => switchTab('add'));
+    tabAdd.addEventListener('touchend', function(e) { e.preventDefault(); switchTab('add'); });
 
     // ── Ingest form ──────────────────────────────────────────────────────────
     const kbContent      = document.getElementById('kb-content');
@@ -890,17 +891,17 @@
 
     let sessionEntries = [];
 
-    kbContent.addEventListener('input', () => {
+    function updateKbCharCount() {
       const len = kbContent.value.length;
-      kbCharHint.textContent = `${len} / 8000`;
+      kbCharHint.textContent = len + ' / 8000';
       kbCharHint.classList.toggle('warn', len > 7200);
-    });
+    }
+    kbContent.addEventListener('input', updateKbCharCount);
+    kbContent.addEventListener('keyup', updateKbCharCount);
+    kbContent.addEventListener('change', updateKbCharCount);
 
     ingestSubmit.addEventListener('click', ingest);
-
-    kbContent.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && e.metaKey) ingest();
-    });
+    ingestSubmit.addEventListener('touchend', function(e) { e.preventDefault(); ingest(); });
 
     async function ingest() {
       const content = kbContent.value.trim();
