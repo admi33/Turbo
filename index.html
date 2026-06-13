@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowledge Base</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & tokens ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:          #F7F6F3;
+      --surface:     #FFFFFF;
+      --border:      #E4E2DC;
+      --text:        #1A1916;
+      --muted:       #7A7870;
+      --accent:      #2D5BE3;        /* question mark / focus ring */
+      --badge-kb:    #1B6B3A;        /* Knowledge Base — deep green */
+      --badge-kb-bg: #EBF5EF;
+      --badge-ai:    #1652A8;        /* AI Generated — mid blue */
+      --badge-ai-bg: #EBF1FC;
+      --badge-cache: #7B4F12;        /* Cached — amber */
+      --badge-cache-bg: #FEF3E2;
+      --radius:      14px;
+      --shadow:      0 2px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-lg:   0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px 80px;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--accent);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: -1px;
+      box-shadow: 0 4px 14px rgba(45,91,227,0.30);
+    }
+
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 500;
+      font-size: 1.9rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Card ───────────────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    /* ── Input area ─────────────────────────────────────────────────── */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label.sr {
+      position: absolute;
+      width: 1px; height: 1px;
+      overflow: hidden; clip: rect(0,0,0,0);
+    }
+
+    textarea {
+      width: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      resize: vertical;
+      min-height: 90px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+
+    textarea::placeholder { color: var(--muted); }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(45,91,227,0.12);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .char-count {
+      font-size: 0.78rem;
+      color: var(--muted);
+      min-width: 60px;
+    }
+
+    .char-count.warn { color: #C0392B; }
+
+    button#submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 22px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      white-space: nowrap;
+    }
+
+    button#submit:hover:not(:disabled) {
+      background: #2248C2;
+      box-shadow: 0 4px 14px rgba(45,91,227,0.30);
+    }
+
+    button#submit:active:not(:disabled) { transform: scale(0.97); }
+
+    button#submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* ── Divider ─────────────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+      display: none;
+    }
+
+    .divider.visible { display: block; }
+
+    /* ── Spinner ─────────────────────────────────────────────────────── */
+    #spinner {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    #spinner.visible { display: flex; }
+
+    .spin {
+      width: 18px; height: 18px;
+      border: 2.5px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Answer block ────────────────────────────────────────────────── */
+    #answer-block {
+      display: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #answer-block.visible {
+      display: block;
+    }
+
+    #answer-block.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .answer-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 20px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge.kb {
+      color: var(--badge-kb);
+      background: var(--badge-kb-bg);
+    }
+    .badge.kb .badge-dot { background: var(--badge-kb); }
+
+    .badge.ai {
+      color: var(--badge-ai);
+      background: var(--badge-ai-bg);
+    }
+    .badge.ai .badge-dot { background: var(--badge-ai); }
+
+    .badge.cached {
+      color: var(--badge-cache);
+      background: var(--badge-cache-bg);
+    }
+    .badge.cached .badge-dot { background: var(--badge-cache); }
+
+    .answer-text {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--text);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* ── Error state ─────────────────────────────────────────────────── */
+    #error-block {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      background: #FFF0F0;
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #B91C1C;
+    }
+
+    #error-block.visible { display: flex; }
+
+    /* ── History ─────────────────────────────────────────────────────── */
+    #history-section {
+      width: 100%;
+      max-width: 620px;
+      margin-top: 32px;
+      display: none;
+    }
+
+    #history-section.visible { display: block; }
+
+    #history-section h2 {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .history-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .history-item:hover {
+      border-color: #C5C2BB;
+      box-shadow: var(--shadow);
+    }
+
+    .history-q {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-a {
+      font-size: 0.80rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────────── */
+    footer {
+      margin-top: 48px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ── Mobile ──────────────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      body { padding: 32px 12px 64px; }
+      h1 { font-size: 1.55rem; }
+      .card { padding: 20px; }
+      .row { flex-direction: column; align-items: flex-start; }
+      button#submit { width: 100%; justify-content: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #answer-block { transition: none; }
+      .spin { animation-duration: 1.5s; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-mark">kb</div>
+    <h1>Ask anything</h1>
+    <p>Questions are answered from the knowledge base first,<br>with AI as a fallback for anything new.</p>
+  </header>
+
+  <!-- Main card -->
+  <div class="card" role="main">
+    <div class="input-group">
+      <label class="sr" for="question-input">Your question</label>
+      <textarea
+        id="question-input"
+        placeholder="What would you like to know?"
+        maxlength="1000"
+        rows="3"
+        aria-describedby="char-hint"
+      ></textarea>
+
+      <div class="row">
+        <span class="char-count" id="char-hint" aria-live="polite">0 / 1000</span>
+        <button id="submit" type="button" aria-label="Submit question">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M1 7.5h13M8.5 2l5.5 5.5-5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Ask
+        </button>
+      </div>
+    </div>
+
+    <hr class="divider" id="divider" />
+
+    <!-- Spinner -->
+    <div id="spinner" role="status" aria-live="polite">
+      <div class="spin"></div>
+      <span>Searching knowledge base…</span>
+    </div>
+
+    <!-- Error -->
+    <div id="error-block" role="alert">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:1px">
+        <circle cx="8" cy="8" r="7" stroke="#B91C1C" stroke-width="1.5"/>
+        <path d="M8 5v4M8 11v.5" stroke="#B91C1C" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span id="error-text">Something went wrong. Please try again.</span>
+    </div>
+
+    <!-- Answer -->
+    <div id="answer-block">
+      <div class="answer-meta">
+        <span class="badge kb" id="badge-kb" hidden>
+          <span class="badge-dot"></span>Knowledge Base
+        </span>
+        <span class="badge ai" id="badge-ai" hidden>
+          <span class="badge-dot"></span>AI Generated
+        </span>
+        <span class="badge cached" id="badge-cached" hidden>
+          <span class="badge-dot"></span>Cached
+        </span>
+      </div>
+      <div class="answer-text" id="answer-text"></div>
+    </div>
+  </div>
+
+  <!-- Recent questions -->
+  <section id="history-section" aria-label="Recent questions">
+    <h2>Recent</h2>
+    <div class="history-list" id="history-list"></div>
+  </section>
+
+  <footer>
+    Powered by Groq &amp; Supabase pgvector
+  </footer>
+
+  <script>
+    // ── Config ──────────────────────────────────────────────────────────────
+    const API_URL = '/api/ask';
+    const MAX_HISTORY = 5;
+
+    // ── DOM refs ────────────────────────────────────────────────────────────
+    const input       = document.getElementById('question-input');
+    const submitBtn   = document.getElementById('submit');
+    const charHint    = document.getElementById('char-hint');
+    const divider     = document.getElementById('divider');
+    const spinner     = document.getElementById('spinner');
+    const errorBlock  = document.getElementById('error-block');
+    const errorText   = document.getElementById('error-text');
+    const answerBlock = document.getElementById('answer-block');
+    const answerText  = document.getElementById('answer-text');
+    const badgeKb     = document.getElementById('badge-kb');
+    const badgeAi     = document.getElementById('badge-ai');
+    const badgeCached = document.getElementById('badge-cached');
+    const histSection = document.getElementById('history-section');
+    const histList    = document.getElementById('history-list');
+
+    // ── Session ID (anonymous) ──────────────────────────────────────────────
+    const userId = (() => {
+      const key = 'kb_session';
+      let id = sessionStorage.getItem(key);
+      if (!id) { id = crypto.randomUUID(); sessionStorage.setItem(key, id); }
+      return id;
+    })();
+
+    // ── In-memory history ───────────────────────────────────────────────────
+    let history = [];
+
+    // ── Char counter ────────────────────────────────────────────────────────
+    input.addEventListener('input', () => {
+      const len = input.value.length;
+      charHint.textContent = `${len} / 1000`;
+      charHint.classList.toggle('warn', len > 900);
+    });
+
+    // ── Submit on Enter (no shift) ──────────────────────────────────────────
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
+    });
+
+    submitBtn.addEventListener('click', submit);
+
+    // ── UI state helpers ────────────────────────────────────────────────────
+    function showState(state) {
+      divider.classList.toggle('visible', state !== 'idle');
+      spinner.classList.toggle('visible', state === 'loading');
+      errorBlock.classList.toggle('visible', state === 'error');
+
+      if (state !== 'answer') {
+        answerBlock.classList.remove('visible', 'in');
+      }
+    }
+
+    function revealAnswer(text, source, cached) {
+      answerText.textContent = text;
+
+      [badgeKb, badgeAi, badgeCached].forEach(b => b.hidden = true);
+      if (cached)                       badgeCached.hidden = false;
+      else if (source === 'knowledge_base') badgeKb.hidden  = false;
+      else                              badgeAi.hidden  = false;
+
+      showState('answer');
+      answerBlock.classList.add('visible');
+
+      // Trigger transition on next frame
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => answerBlock.classList.add('in'));
+      });
+    }
+
+    // ── History panel ───────────────────────────────────────────────────────
+    function addToHistory(q, a, source) {
+      history.unshift({ q, a, source });
+      if (history.length > MAX_HISTORY) history.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      if (!history.length) { histSection.classList.remove('visible'); return; }
+      histSection.classList.add('visible');
+      histList.innerHTML = '';
+      history.forEach(({ q, a, source }) => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `
+          <div class="history-q">${escHtml(q)}</div>
+          <div class="history-a">${escHtml(a)}</div>
+        `;
+        item.addEventListener('click', () => {
+          input.value = q;
+          charHint.textContent = `${q.length} / 1000`;
+          revealAnswer(a, source, false);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        histList.appendChild(item);
+      });
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // ── Main submit ─────────────────────────────────────────────────────────
+    async function submit() {
+      const question = input.value.trim();
+      if (!question) { input.focus(); return; }
+
+      submitBtn.disabled = true;
+      showState('loading');
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question, userId }),
+        });
+
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || `Server error (${res.status})`);
+        }
+
+        const data = await res.json();
+        revealAnswer(data.answer, data.source, data.cached);
+        addToHistory(question, data.answer, data.source);
+
+      } catch (err) {
+        showState('error');
+        errorText.textContent = err.message || 'Something went wrong. Please try again.';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
