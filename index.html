@@ -355,6 +355,213 @@
       text-align: center;
     }
 
+    /* ── Tab nav ─────────────────────────────────────────────────────── */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      background: var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 28px;
+      width: 100%;
+      max-width: 620px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 16px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    }
+
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    /* ── Ingest panel ────────────────────────────────────────────────── */
+    #ingest-card { display: none; }
+    #ingest-card.active { display: block; }
+    #ask-card.active { display: block; }
+    #ask-card { display: none; }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .field label .optional {
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .field input[type="text"] {
+      width: 100%;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .field input[type="text"]:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(45,91,227,0.12);
+    }
+
+    .field input[type="text"]::placeholder,
+    .field textarea::placeholder { color: var(--muted); }
+
+    .field textarea {
+      min-height: 140px;
+    }
+
+    .ingest-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    button#ingest-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #1B6B3A;
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 22px;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      white-space: nowrap;
+    }
+
+    button#ingest-submit:hover:not(:disabled) {
+      background: #155730;
+      box-shadow: 0 4px 14px rgba(27,107,58,0.28);
+    }
+
+    button#ingest-submit:active:not(:disabled) { transform: scale(0.97); }
+
+    button#ingest-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── Success toast ───────────────────────────────────────────────── */
+    #ingest-success {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      background: #EBF5EF;
+      border: 1px solid #A7D7B8;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #1B6B3A;
+      margin-top: 16px;
+    }
+
+    #ingest-success.visible { display: flex; }
+
+    #ingest-error {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      background: #FFF0F0;
+      border: 1px solid #FECACA;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #B91C1C;
+      margin-top: 16px;
+    }
+
+    #ingest-error.visible { display: flex; }
+
+    /* ── KB entry list ───────────────────────────────────────────────── */
+    .kb-entries {
+      margin-top: 24px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+
+    .kb-entries h3 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .kb-entry {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .kb-entry-icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      background: var(--badge-kb-bg);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .kb-entry-body { flex: 1; min-width: 0; }
+
+    .kb-entry-content {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+
+    .kb-entry-meta {
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
     /* ── Mobile ──────────────────────────────────────────────────────── */
     @media (max-width: 480px) {
       body { padding: 32px 12px 64px; }
@@ -362,6 +569,8 @@
       .card { padding: 20px; }
       .row { flex-direction: column; align-items: flex-start; }
       button#submit { width: 100%; justify-content: center; }
+      button#ingest-submit { width: 100%; justify-content: center; }
+      .ingest-footer { flex-direction: column; align-items: flex-start; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -379,8 +588,14 @@
     <p>Questions are answered from the knowledge base first,<br>with AI as a fallback for anything new.</p>
   </header>
 
-  <!-- Main card -->
-  <div class="card" role="main">
+  <!-- Tab nav -->
+  <div class="tab-nav" role="tablist">
+    <button class="tab-btn active" id="tab-ask" role="tab" aria-selected="true" aria-controls="ask-card">Ask a question</button>
+    <button class="tab-btn" id="tab-add" role="tab" aria-selected="false" aria-controls="ingest-card">Add knowledge</button>
+  </div>
+
+  <!-- Ask card -->
+  <div class="card active" id="ask-card" role="tabpanel" aria-labelledby="tab-ask">
     <div class="input-group">
       <label class="sr" for="question-input">Your question</label>
       <textarea
@@ -434,9 +649,66 @@
       </div>
       <div class="answer-text" id="answer-text"></div>
     </div>
-  </div>
+  </div><!-- /ask-card -->
 
-  <!-- Recent questions -->
+  <!-- Add Knowledge card -->
+  <div class="card" id="ingest-card" role="tabpanel" aria-labelledby="tab-add">
+
+    <div class="field">
+      <label for="kb-content">Knowledge entry <span class="optional">(required)</span></label>
+      <textarea
+        id="kb-content"
+        placeholder="Paste or type the content you want stored — a fact, policy, procedure, FAQ answer, etc."
+        maxlength="8000"
+        rows="5"
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label for="kb-topic">Topic <span class="optional">(optional)</span></label>
+      <input type="text" id="kb-topic" placeholder="e.g. billing, onboarding, technical" maxlength="80" />
+    </div>
+
+    <div class="field">
+      <label for="kb-tags">Tags <span class="optional">(optional, comma-separated)</span></label>
+      <input type="text" id="kb-tags" placeholder="e.g. refund, pricing, free-trial" maxlength="200" />
+    </div>
+
+    <div class="ingest-footer">
+      <span class="char-count" id="kb-char-hint">0 / 8000</span>
+      <button id="ingest-submit" type="button">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Save to knowledge base
+      </button>
+    </div>
+
+    <!-- Feedback -->
+    <div id="ingest-success" role="status">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:1px">
+        <circle cx="8" cy="8" r="7" stroke="#1B6B3A" stroke-width="1.5"/>
+        <path d="M5 8l2.5 2.5L11 5" stroke="#1B6B3A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span id="ingest-success-text">Entry saved and indexed.</span>
+    </div>
+    <div id="ingest-error" role="alert">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style="flex-shrink:0;margin-top:1px">
+        <circle cx="8" cy="8" r="7" stroke="#B91C1C" stroke-width="1.5"/>
+        <path d="M8 5v4M8 11v.5" stroke="#B91C1C" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span id="ingest-error-text">Something went wrong.</span>
+    </div>
+
+    <!-- Recently added entries (this session) -->
+    <div class="kb-entries" id="kb-entries" style="display:none">
+      <h3>Added this session</h3>
+      <div id="kb-entries-list"></div>
+    </div>
+
+  </div><!-- /ingest-card -->
+
+
   <section id="history-section" aria-label="Recent questions">
     <h2>Recent</h2>
     <div class="history-list" id="history-list"></div>
@@ -583,6 +855,119 @@
         submitBtn.disabled = false;
       }
     }
-  </script>
+    // ── Tab switching ────────────────────────────────────────────────────────
+    const tabAsk    = document.getElementById('tab-ask');
+    const tabAdd    = document.getElementById('tab-add');
+    const askCard   = document.getElementById('ask-card');
+    const ingestCard = document.getElementById('ingest-card');
+
+    function switchTab(tab) {
+      const isAsk = tab === 'ask';
+      tabAsk.classList.toggle('active', isAsk);
+      tabAdd.classList.toggle('active', !isAsk);
+      tabAsk.setAttribute('aria-selected', isAsk);
+      tabAdd.setAttribute('aria-selected', !isAsk);
+      askCard.classList.toggle('active', isAsk);
+      ingestCard.classList.toggle('active', !isAsk);
+      histSection.style.display = isAsk ? '' : 'none';
+    }
+
+    tabAsk.addEventListener('click', () => switchTab('ask'));
+    tabAdd.addEventListener('click', () => switchTab('add'));
+
+    // ── Ingest form ──────────────────────────────────────────────────────────
+    const kbContent      = document.getElementById('kb-content');
+    const kbTopic        = document.getElementById('kb-topic');
+    const kbTags         = document.getElementById('kb-tags');
+    const kbCharHint     = document.getElementById('kb-char-hint');
+    const ingestSubmit   = document.getElementById('ingest-submit');
+    const ingestSuccess  = document.getElementById('ingest-success');
+    const ingestSuccessT = document.getElementById('ingest-success-text');
+    const ingestError    = document.getElementById('ingest-error');
+    const ingestErrorT   = document.getElementById('ingest-error-text');
+    const kbEntriesWrap  = document.getElementById('kb-entries');
+    const kbEntriesList  = document.getElementById('kb-entries-list');
+
+    let sessionEntries = [];
+
+    kbContent.addEventListener('input', () => {
+      const len = kbContent.value.length;
+      kbCharHint.textContent = `${len} / 8000`;
+      kbCharHint.classList.toggle('warn', len > 7200);
+    });
+
+    ingestSubmit.addEventListener('click', ingest);
+
+    kbContent.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.metaKey) ingest();
+    });
+
+    async function ingest() {
+      const content = kbContent.value.trim();
+      if (!content) { kbContent.focus(); return; }
+
+      ingestSubmit.disabled = true;
+      ingestSuccess.classList.remove('visible');
+      ingestError.classList.remove('visible');
+
+      const topic = kbTopic.value.trim() || 'general';
+      const tags  = kbTags.value.split(',').map(t => t.trim()).filter(Boolean);
+
+      try {
+        const res = await fetch('/api/ingest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content, topic, tags }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `Error ${res.status}`);
+
+        // Success
+        ingestSuccessT.textContent = `Saved and indexed. ID: ${data.entry.id.slice(0, 8)}…`;
+        ingestSuccess.classList.add('visible');
+
+        // Add to session list
+        sessionEntries.unshift({ content, topic, tags, id: data.entry.id });
+        renderSessionEntries();
+
+        // Clear fields
+        kbContent.value = '';
+        kbTopic.value   = '';
+        kbTags.value    = '';
+        kbCharHint.textContent = '0 / 8000';
+        kbCharHint.classList.remove('warn');
+
+      } catch (err) {
+        ingestErrorT.textContent = err.message || 'Failed to save. Please try again.';
+        ingestError.classList.add('visible');
+      } finally {
+        ingestSubmit.disabled = false;
+      }
+    }
+
+    function renderSessionEntries() {
+      if (!sessionEntries.length) { kbEntriesWrap.style.display = 'none'; return; }
+      kbEntriesWrap.style.display = 'block';
+      kbEntriesList.innerHTML = '';
+      sessionEntries.slice(0, 6).forEach(({ content, topic, tags }) => {
+        const el = document.createElement('div');
+        el.className = 'kb-entry';
+        const tagStr = tags.length ? tags.join(', ') : '';
+        el.innerHTML = `
+          <div class="kb-entry-icon">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+              <path d="M1 5h8M5 1v8" stroke="#1B6B3A" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="kb-entry-body">
+            <div class="kb-entry-content">${escHtml(content)}</div>
+            <div class="kb-entry-meta">${escHtml(topic)}${tagStr ? ' · ' + escHtml(tagStr) : ''}</div>
+          </div>
+        `;
+        kbEntriesList.appendChild(el);
+      });
+    }
+  
 </body>
 </html>
